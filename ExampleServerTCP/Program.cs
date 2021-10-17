@@ -12,9 +12,26 @@ namespace ExampleServerTCP
     {
         static void Main(string[] args)
         {
-            const string ip = "127.0.0.1";
-            const int port = 8080;
-            var tcpEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            Console.WriteLine("Welcome to Example Server TCP connection");
+            // Get computer name
+            String host = System.Net.Dns.GetHostName();
+            // Get current IP
+            System.Net.IPAddress ip = Dns.GetHostEntry(host).AddressList[2];
+            ip.ToString();
+            Console.WriteLine("Pleace entry server connection Port:");
+            int port = 0;
+            BeginWritePort:
+            try
+            {
+                port = Convert.ToInt32(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("Writed port is not valid, pleace write correct port:");
+                goto BeginWritePort;
+            }
+
+            var tcpEndPoint = new IPEndPoint(ip, port);
             var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             tcpSocket.Bind(tcpEndPoint);
             tcpSocket.Listen(5);
